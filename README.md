@@ -1,3 +1,5 @@
+
+PrepForge - AI based interview preparation app
 AI Interview Prep & Resume Builder
 An AI-powered full-stack web application that generates personalized interview preparation reports and tailored ATS-friendly PDF resumes based on job descriptions, user self-descriptions, and uploaded resumes.
 
