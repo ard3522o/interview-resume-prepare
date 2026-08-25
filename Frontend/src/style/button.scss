@@ -1,0 +1,62 @@
+.button {
+  // 1. Layout & Typography Structure
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem; // Perfect if you ever add an icon (<svg> + text)
+  
+  font-family: inherit;
+  font-weight: 600; // Bold enough to look like a call-to-action
+  font-size: 0.95rem;
+  letter-spacing: 0.02em; // Slight letter spacing looks more premium
+  
+  // 2. Base Box Model
+  border: none;
+  outline: none;
+  padding: 0.875rem 1.75rem;
+  border-radius: 0.75rem; // 0.75rem is the modern sweet-spot (Apple/Stripe style)
+  cursor: pointer;
+
+  // 3. Snappy, Performant Transitions
+  // We avoid 'all' and use a custom cubic-bezier for a "springy" feel
+  transition: 
+    transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), 
+    box-shadow 0.25s ease,
+    background-color 0.25s ease;
+
+  // 4. Primary Variant
+  &.primary-button {
+    background-color: #e1034d;
+    color: #ffffff;
+    
+    // A colored drop-shadow creates a beautiful modern "glow"
+    box-shadow: 0 4px 14px rgba(225, 3, 77, 0.25);
+
+    &:hover {
+      background-color: #f50656; // Slightly brighter on hover
+      box-shadow: 0 6px 20px rgba(225, 3, 77, 0.4); // Glow expands
+      transform: translateY(-2px); // Button lifts up toward the user
+    }
+
+    // Modern Accessibility: Only shows outline when navigating with a keyboard
+    &:focus-visible {
+      outline: 2px solid #e1034d;
+      outline-offset: 3px;
+    }
+  }
+
+  // 5. Active (Click) State
+  &:active {
+    // scale(0.9) is usually too squishy. 0.97 feels solid and tactile.
+    transform: translateY(1px) scale(0.97); 
+    box-shadow: 0 2px 8px rgba(225, 3, 77, 0.2); // Shadow shrinks as it presses down
+  }
+
+  // 6. Disabled State (Always good practice!)
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none !important;
+    box-shadow: none !important;
+  }
+}

@@ -1,0 +1,169 @@
+// 1. Light Mode Variables (Default)
+:root {
+  --primary: #e1034d;
+  --primary-hover: #b8023e;
+  --primary-rgb: 225, 3, 77; // Used for shadows
+  --surface: #ffffff;
+  --bg-color: #f4f4f5;
+  --text-main: #18181b;
+  --text-muted: #71717a;
+  --input-bg: #ffffff;
+  --input-border: #e4e4e7;
+  --radius: 0.75rem;
+  --transition: 0.3s ease;
+}
+
+// 2. Dark Mode Variables (Activates automatically based on device theme)
+@media (prefers-color-scheme: dark) {
+  :root {
+    --primary: #fb115e; // Slightly brighter pink for contrast
+    --primary-hover: #e1034d;
+    --primary-rgb: 251, 17, 94;
+    --surface: #18181b;
+    --bg-color: #09090b;
+    --text-main: #f4f4f5;
+    --text-muted: #a1a1aa;
+    --input-bg: #27272a;
+    --input-border: #3f3f46;
+  }
+}
+
+// 3. Animations
+@keyframes slideUpFade {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes inputPulse {
+  0% { box-shadow: 0 0 0 0 rgba(var(--primary-rgb), 0.4); }
+  70% { box-shadow: 0 0 0 6px rgba(var(--primary-rgb), 0); }
+  100% { box-shadow: 0 0 0 0 rgba(var(--primary-rgb), 0); }
+}
+
+// 4. Main Layout & Styling
+main {
+  min-height: 100vh;
+  width: 100%;
+  background-color: var(--bg-color);
+  color: var(--text-main);
+  transition: background-color var(--transition), color var(--transition);
+  
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem;
+
+  .form-container {
+    width: 100%;
+    max-width: 400px;
+    background: var(--surface);
+    padding: 2.5rem 2rem;
+    border-radius: calc(var(--radius) + 0.5rem);
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 
+                0 8px 10px -6px rgba(0, 0, 0, 0.1);
+    
+    // Triggers the animation when the form loads
+    animation: slideUpFade 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+
+  .input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+
+    label {
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: var(--text-muted);
+      transition: color var(--transition);
+    }
+
+    input {
+      border: 1.5px solid var(--input-border);
+      background-color: var(--input-bg);
+      color: var(--text-main);
+      outline: none;
+      padding: 0.875rem 1rem;
+      border-radius: var(--radius);
+      transition: border-color var(--transition), 
+                  box-shadow var(--transition), 
+                  background-color var(--transition);
+
+      &::placeholder {
+        color: var(--text-muted);
+        opacity: 0.7;
+      }
+
+      &:hover {
+        border-color: rgba(var(--primary-rgb), 0.5);
+      }
+
+      // Animated Focus State
+      &:focus {
+        border-color: var(--primary);
+        background-color: var(--surface);
+        animation: inputPulse 1.5s infinite; // Adds a glowing pulse effect
+      }
+      
+      &:focus + label, &:not(:placeholder-shown) + label {
+          color: var(--text-main);
+      }
+    }
+  }
+
+  button {
+    background-color: var(--primary);
+    color: #ffffff;
+    border: none;
+    padding: 1rem;
+    border-radius: var(--radius);
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 0.5rem;
+    transition: background-color var(--transition), 
+                transform 0.15s ease, 
+                box-shadow var(--transition);
+
+    &:hover {
+      background-color: var(--primary-hover);
+      box-shadow: 0 4px 12px rgba(var(--primary-rgb), 0.3);
+      transform: translateY(-2px); // Slight lift on hover
+    }
+
+    &:active {
+      transform: translateY(1px); // Presses down when clicked
+    }
+  }
+
+  a {
+    color: var(--primary);
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.875rem;
+    text-align: center;
+    transition: color var(--transition), opacity 0.2s;
+
+    &:hover {
+      color: var(--primary-hover);
+      text-decoration: underline;
+      opacity: 0.8;
+    }
+  }
+}
