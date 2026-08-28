@@ -4,18 +4,44 @@ import { useInterview } from '../hooks/useInterview.js'
 import { useNavigate } from 'react-router'
 
 const Home = () => {
-
-    const { loading, generateReport,reports } = useInterview()
+    const { loading, generateReport, reports } = useInterview()
     const [ jobDescription, setJobDescription ] = useState("")
     const [ selfDescription, setSelfDescription ] = useState("")
+    const [ isSubmitting, setIsSubmitting ] = useState(false)
     const resumeInputRef = useRef()
 
     const navigate = useNavigate()
 
     const handleGenerateReport = async () => {
-        const resumeFile = resumeInputRef.current.files[ 0 ]
-        const data = await generateReport({ jobDescription, selfDescription, resumeFile })
-        navigate(`/interview/${data._id}`)
+        // 1. Front-end Validation
+        if (!jobDescription.trim()) {
+            alert("Please provide a target job description.")
+            return
+        }
+
+        const resumeFile = resumeInputRef.current?.files?.[0]
+        if (!resumeFile && !selfDescription.trim()) {
+            alert("Please upload a resume OR provide a self-description.")
+            return
+        }
+
+        try {
+            setIsSubmitting(true)
+            // 2. Call hook to generate report
+            const data = await generateReport({ jobDescription, selfDescription, resumeFile })
+
+            // 3. Ensure valid response before navigating
+            if (data && data._id) {
+                navigate(`/interview/${data._id}`)
+            } else {
+                alert("Failed to create interview strategy. Please try again.")
+            }
+        } catch (error) {
+            console.error("Error generating strategy:", error)
+            alert(error.message || "An unexpected error occurred.")
+        } finally {
+            setIsSubmitting(false)
+        }
     }
 
     if (loading) {
@@ -28,7 +54,6 @@ const Home = () => {
 
     return (
         <div className='home-page'>
-
             {/* Page Header */}
             <header className='page-header'>
                 <h1>Create Your Custom <span className='highlight'>Interview Plan</span></h1>
@@ -49,12 +74,13 @@ const Home = () => {
                             <span className='badge badge--required'>Required</span>
                         </div>
                         <textarea
+                            value={jobDescription}
                             onChange={(e) => { setJobDescription(e.target.value) }}
                             className='panel__textarea'
                             placeholder={`Paste the full job description here...\ne.g. 'Senior Frontend Engineer at Google requires proficiency in React, TypeScript, and large-scale system design...'`}
                             maxLength={5000}
                         />
-                        <div className='char-counter'>0 / 5000 chars</div>
+                        <div className='char-counter'>{jobDescription.length} / 5000 chars</div>
                     </div>
 
                     {/* Vertical Divider */}
@@ -92,6 +118,7 @@ const Home = () => {
                         <div className='self-description'>
                             <label className='section-label' htmlFor='selfDescription'>Quick Self-Description</label>
                             <textarea
+                                value={selfDescription}
                                 onChange={(e) => { setSelfDescription(e.target.value) }}
                                 id='selfDescription'
                                 name='selfDescription'
@@ -115,9 +142,10 @@ const Home = () => {
                     <span className='footer-info'>AI-Powered Strategy Generation &bull; Approx 30s</span>
                     <button
                         onClick={handleGenerateReport}
+                        disabled={isSubmitting}
                         className='generate-btn'>
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6z" /></svg>
-                        Generate My Interview Strategy
+                        {isSubmitting ? 'Generating Plan...' : 'Generate My Interview Strategy'}
                     </button>
                 </div>
             </div>
