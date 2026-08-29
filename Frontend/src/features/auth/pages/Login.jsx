@@ -11,14 +11,16 @@ const Login = () => {
 
     const [ email, setEmail ] = useState("")
     const [ password, setPassword ] = useState("")
+    const [ error, setError ] = useState("")
 
     const handleSubmit = async (e) => {
         e.preventDefault()
+        setError("")
         try {
             await handleLogin({email,password})
             navigate('/dashboard')
         } catch (err) {
-            // Error is already logged in useAuth, nothing extra needed here
+            setError(err.response?.data?.message || "Login failed. Please try again.")
         }
     }
 
@@ -49,9 +51,10 @@ const Login = () => {
                                 onChange={(e) => { setPassword(e.target.value) }}
                                 type="password" id="password" name='password' placeholder='Enter password' />
                         </div>
-                        <button className='button primary-button' >Login</button>
-                    </form>
-                    <p>Don't have an account? <Link to={"/register"} >Create one</Link> </p>
+                    {error && <div className='form-error'>{error}</div>}
+                    <button className='button primary-button' >Login</button>
+                </form>
+                <p>Don't have an account? <Link to={"/register"} >Create one</Link> </p>
                 </div>
             </main>
         </>

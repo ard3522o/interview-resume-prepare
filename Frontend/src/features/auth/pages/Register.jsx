@@ -9,16 +9,18 @@ const Register = () => {
     const [ username, setUsername ] = useState("")
     const [ email, setEmail ] = useState("")
     const [ password, setPassword ] = useState("")
+    const [ error, setError ] = useState("")
 
     const {loading,handleRegister} = useAuth()
     
     const handleSubmit = async (e) => {
         e.preventDefault()
+        setError("")
         try {
             await handleRegister({username,email,password})
             navigate("/dashboard")
         } catch (err) {
-            // Error is already logged in useAuth, nothing extra needed here
+            setError(err.response?.data?.message || "Registration failed. Please try again.")
         }
     }
 
@@ -56,6 +58,7 @@ const Register = () => {
                                 type="password" id="password" name='password' placeholder='Enter password' />
                         </div>
 
+                        {error && <div className='form-error'>{error}</div>}
                         <button className='button primary-button' >Create Account</button>
 
                     </form>

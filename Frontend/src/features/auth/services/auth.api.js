@@ -11,11 +11,11 @@ export async function register({ username, email, password }) {
         const response = await api.post('/api/auth/register', {
             username, email, password
         });
+        if (response.data.token) localStorage.setItem("token", response.data.token);
         return response.data;
     } catch (err) {
-        // Log the actual backend error so you can see Zod validation issues
         console.error("Register Error:", err.response?.data || err.message);
-        throw err; // Throw it so your React component knows it failed
+        throw err;
     }
 }
 
@@ -24,15 +24,17 @@ export async function login({ email, password }) {
         const response = await api.post("/api/auth/login", {
             email, password
         });
+        if (response.data.token) localStorage.setItem("token", response.data.token);
         return response.data;
     } catch (err) {
         console.error("Login Error:", err.response?.data || err.message);
-        throw err; 
+        throw err;
     }
 }
 
 export async function logout() {
     try {
+        localStorage.removeItem("token");
         const response = await api.get("/api/auth/logout");
         return response.data;
     } catch (err) {
@@ -43,8 +45,7 @@ export async function logout() {
 
 export async function getMe() {
     try {
-        // ✅ FIXED: Changed axios.get to api.get
-        const response = await api.get("/api/auth/get-me"); 
+        const response = await api.get("/api/auth/get-me");
         return response.data;
     } catch (err) {
         console.error("GetMe Error:", err.response?.data || err.message);
