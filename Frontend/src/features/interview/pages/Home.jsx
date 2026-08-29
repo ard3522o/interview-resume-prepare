@@ -39,7 +39,7 @@ const Home = () => {
             }
         } catch (error) {
             console.error("Error generating strategy:", error)
-            alert(error.message || "An unexpected error occurred.")
+            alert(error.response?.data?.message || error.message || "An unexpected error occurred.")
         } finally {
             setIsSubmitting(false)
         }
