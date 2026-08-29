@@ -26,21 +26,19 @@
 
   // 4. Primary Variant
   &.primary-button {
-    background-color: #e1034d;
+    background-color: #7c3aed;
     color: #ffffff;
     
-    // A colored drop-shadow creates a beautiful modern "glow"
-    box-shadow: 0 4px 14px rgba(225, 3, 77, 0.25);
+    box-shadow: 0 4px 14px rgba(124, 58, 237, 0.25);
 
     &:hover {
-      background-color: #f50656; // Slightly brighter on hover
-      box-shadow: 0 6px 20px rgba(225, 3, 77, 0.4); // Glow expands
-      transform: translateY(-2px); // Button lifts up toward the user
+      background-color: #6d28d9;
+      box-shadow: 0 6px 20px rgba(124, 58, 237, 0.4);
+      transform: translateY(-2px);
     }
 
-    // Modern Accessibility: Only shows outline when navigating with a keyboard
     &:focus-visible {
-      outline: 2px solid #e1034d;
+      outline: 2px solid #7c3aed;
       outline-offset: 3px;
     }
   }
@@ -49,7 +47,7 @@
   &:active {
     // scale(0.9) is usually too squishy. 0.97 feels solid and tactile.
     transform: translateY(1px) scale(0.97); 
-    box-shadow: 0 2px 8px rgba(225, 3, 77, 0.2); // Shadow shrinks as it presses down
+    box-shadow: 0 2px 8px rgba(124, 58, 237, 0.2);
   }
 
   // 6. Disabled State (Always good practice!)

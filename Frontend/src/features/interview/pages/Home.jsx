@@ -2,6 +2,7 @@ import React, { useState, useRef } from 'react'
 import "../style/home.scss"
 import { useInterview } from '../hooks/useInterview.js'
 import { useNavigate } from 'react-router'
+import Navbar from '../../shared/components/Navbar'
 
 const Home = () => {
     const { loading, generateReport, reports } = useInterview()
@@ -46,14 +47,19 @@ const Home = () => {
 
     if (loading) {
         return (
-            <main className='loading-screen'>
-                <h1>Loading your interview plan...</h1>
-            </main>
+            <>
+                <Navbar />
+                <main className='loading-screen'>
+                    <h1>Loading your interview plan...</h1>
+                </main>
+            </>
         )
     }
 
     return (
-        <div className='home-page'>
+        <>
+            <Navbar />
+            <div className='home-page'>
             {/* Page Header */}
             <header className='page-header'>
                 <h1>Create Your Custom <span className='highlight'>Interview Plan</span></h1>
@@ -173,6 +179,7 @@ const Home = () => {
                 <a href='#'>Help Center</a>
             </footer>
         </div>
+        </>
     )
 }
 

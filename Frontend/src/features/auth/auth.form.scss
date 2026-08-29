@@ -1,34 +1,33 @@
-// 1. Light Mode Variables (Default)
+// ── Variables ────────────────────────────────────────────────────────────────
 :root {
-  --primary: #e1034d;
-  --primary-hover: #b8023e;
-  --primary-rgb: 225, 3, 77; // Used for shadows
-  --surface: #ffffff;
-  --bg-color: #f4f4f5;
-  --text-main: #18181b;
-  --text-muted: #71717a;
-  --input-bg: #ffffff;
-  --input-border: #e4e4e7;
-  --radius: 0.75rem;
+  --primary: #7c3aed;
+  --primary-hover: #6d28d9;
+  --primary-rgb: 124, 58, 237;
+  --surface: #161b22;
+  --bg-color: #0d1117;
+  --text-main: #e6edf3;
+  --text-muted: #8b949e;
+  --input-bg: #0d1117;
+  --input-border: #30363d;
+  --radius: 0.65rem;
   --transition: 0.3s ease;
 }
 
-// 2. Dark Mode Variables (Activates automatically based on device theme)
-@media (prefers-color-scheme: dark) {
+@media (prefers-color-scheme: light) {
   :root {
-    --primary: #fb115e; // Slightly brighter pink for contrast
-    --primary-hover: #e1034d;
-    --primary-rgb: 251, 17, 94;
-    --surface: #18181b;
-    --bg-color: #09090b;
-    --text-main: #f4f4f5;
-    --text-muted: #a1a1aa;
-    --input-bg: #27272a;
-    --input-border: #3f3f46;
+    --primary: #7c3aed;
+    --primary-hover: #6d28d9;
+    --primary-rgb: 124, 58, 237;
+    --surface: #ffffff;
+    --bg-color: #f6f8fa;
+    --text-main: #1f2328;
+    --text-muted: #656d76;
+    --input-bg: #ffffff;
+    --input-border: #d0d7de;
   }
 }
 
-// 3. Animations
+// ── Animations
 @keyframes slideUpFade {
   from {
     opacity: 0;
@@ -46,34 +45,63 @@
   100% { box-shadow: 0 0 0 0 rgba(var(--primary-rgb), 0); }
 }
 
-// 4. Main Layout & Styling
+// ── Main Layout ─────────────────────────────────────────────────────────────
 main {
   min-height: 100vh;
   width: 100%;
   background-color: var(--bg-color);
   color: var(--text-main);
   transition: background-color var(--transition), color var(--transition);
-  
+
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 1rem;
+  padding: 6rem 1rem 2rem;
+
+  &.auth-loading {
+    justify-content: center;
+    align-items: center;
+
+    h1 {
+      font-size: 1rem;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+  }
 
   .form-container {
     width: 100%;
-    max-width: 400px;
+    max-width: 420px;
     background: var(--surface);
     padding: 2.5rem 2rem;
-    border-radius: calc(var(--radius) + 0.5rem);
-    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 
-                0 8px 10px -6px rgba(0, 0, 0, 0.1);
-    
-    // Triggers the animation when the form loads
-    animation: slideUpFade 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    border-radius: 0.875rem;
+    border: 1px solid var(--input-border);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+
+    animation: slideUpFade 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 
     display: flex;
     flex-direction: column;
     gap: 1.5rem;
+  }
+
+  .form-header {
+    text-align: center;
+    margin-bottom: 0.25rem;
+
+    h1 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--text-main);
+      margin: 0 0 0.35rem;
+      letter-spacing: -0.02em;
+    }
+
+    p {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      margin: 0;
+    }
   }
 
   form {

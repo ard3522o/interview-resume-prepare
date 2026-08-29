@@ -13,6 +13,8 @@ app.use(cors({
   origin: (origin, callback) => {
     // Allow requests with no origin (e.g. server-to-server, curl)
     if (!origin) return callback(null, true);
+    // Allow any localhost in development
+    if (/^http:\/\/localhost(:\d+)?$/i.test(origin)) return callback(null, true);
     // Allow any Vercel preview / production deploy
     if (/\.vercel\.app$/i.test(origin)) return callback(null, true);
     // Allow explicitly listed origins
