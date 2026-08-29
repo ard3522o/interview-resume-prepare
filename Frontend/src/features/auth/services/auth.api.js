@@ -6,6 +6,17 @@ const api = axios.create({
   withCredentials: true
 });
 
+// Render and Vercel are different sites. Do not rely solely on a cross-site
+// cookie: browsers can block it. The API returns this token after login or
+// registration, so send it with every protected auth request as well.
+api.interceptors.request.use((config) => {
+    const token = localStorage.getItem("token");
+    if (token) {
+        config.headers.Authorization = `Bearer ${token}`;
+    }
+    return config;
+});
+
 export async function register({ username, email, password }) {
     try {
         const response = await api.post('/api/auth/register', {
