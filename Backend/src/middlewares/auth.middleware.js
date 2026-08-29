@@ -3,12 +3,22 @@ const jwt = require("jsonwebtoken");
 const tokenBlacklistModel = require("../models/blacklist.model");
 
 async function authUser(req, res, next) {
-    let token = req.cookies?.token;
+    // Prefer the explicitly supplied bearer token. On a Vercel -> Render
+    // deployment, an old third-party cookie can still be sent by the browser;
+    // it must not override the current token stored by the frontend.
+    const authorization = req.headers.authorization;
+    let token;
 
-    // Read from Authorization header if cookie is missing
-    if (!token && req.headers.authorization) {
-        const parts = req.headers.authorization.split(" ");
-        token = parts.length === 2 && parts[0] === "Bearer" ? parts[1] : req.headers.authorization;
+    if (authorization) {
+        const parts = authorization.split(" ");
+        token = parts.length === 2 && parts[0].toLowerCase() === "bearer"
+            ? parts[1]
+            : authorization;
+    }
+
+    // Keep cookie support for clients that do not use bearer authentication.
+    if (!token) {
+        token = req.cookies?.token;
     }
 
     if (!token) {
