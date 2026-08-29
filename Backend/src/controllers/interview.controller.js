@@ -10,6 +10,12 @@ const interviewReportModel = require("../models/interviewReport.model")
  */
 async function generateInterViewReportController(req, res) {
     try {
+        if (!process.env.GOOGLE_GENAI_API_KEY) {
+            return res.status(503).json({
+                message: "AI service is not configured. Add GOOGLE_GENAI_API_KEY in Render and redeploy."
+            })
+        }
+
         const { selfDescription, jobDescription } = req.body
         let resumeContent = ""
 
